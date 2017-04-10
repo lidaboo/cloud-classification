@@ -1,6 +1,6 @@
 KNN_NEIGHBOR_VALUES = 1:2:15;
 NN_HIDDEN_LAYER_SIZE_VALUES = 15:5:50;
-SVM_KERNELS = {'linear'; 'rbf'; 'polynomial'};
+SVM_KERNELS = {'linear'; 'gaussian'; 'polynomial'};
 
 knnTrainAccuracy = zeros(numel(KNN_NEIGHBOR_VALUES), 1);
 knnValidationAccuracy = zeros(numel(KNN_NEIGHBOR_VALUES), 1);
@@ -13,17 +13,17 @@ svmValidationAccuracy = zeros(numel(SVM_KERNELS), 1);
 
 for n = KNN_NEIGHBOR_VALUES
 
-    [knnTrainAccuracy(n), knnValidationAccuracy(n)] = learnKNN(n);
+    [knnTrainAccuracy(n), knnValidationAccuracy(n)] = knnCV(n);
 end
 
 for h = NN_HIDDEN_LAYER_SIZE_VALUES
 
-    [nnTrainAccuracy(h), nnValidationAccuracy(h)] = learnNN(h);
+    [nnTrainAccuracy(h), nnValidationAccuracy(h)] = nnCV(h);
 end
 
 for k = 1:numel(SVM_KERNELS)
    
-    [svmTrainAccuracy(n), svmValidationAccuracy(n)] = learnSVM(SVM_KERNELS{k});
+    [svmTrainAccuracy(n), svmValidationAccuracy(n)] = svmCV(SVM_KERNELS{k});
 end
 
 % Prepare data for plotting
@@ -53,7 +53,7 @@ l = cell(1, 2);
 l{1} = 'Training';
 l{2} = 'CV';
 legend(h, l);
-title('SVM');
+title('SVM - Gaussian Kernel');
 % xlabel('Kernel Functions');
 set(gca, 'xticklabel', SVM_KERNELS)
 ylabel('Accuracy');
