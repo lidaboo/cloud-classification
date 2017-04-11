@@ -1,5 +1,4 @@
-﻿/DWT/CV/Yeni Klasör/
-/DWT/Raw
-/DWT/Tiff
-/DWT/grid.mat
+﻿data/DWT/CV/Default/
+data/DWT/Raw
+data/DWT/Tiff
 *.asv
