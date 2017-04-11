@@ -13,19 +13,25 @@ svmValidationAccuracy = zeros(numel(SVM_KERNELS), 1);
 
 for n = KNN_NEIGHBOR_VALUES
 
+	fprintf('KNN Cross Validation for %s neighbors\n', num2str(n));
     [knnTrainAccuracy(n), knnValidationAccuracy(n)] = knnCV(n);
 end
 
 for h = NN_HIDDEN_LAYER_SIZE_VALUES
 
+    fprintf('NN Cross Validation for hidden layer size: %s\n', num2str(h));
     [nnTrainAccuracy(h), nnValidationAccuracy(h)] = nnCV(h);
 end
 
 for k = 1:numel(SVM_KERNELS)
    
-    [svmTrainAccuracy(n), svmValidationAccuracy(n)] = svmCV(SVM_KERNELS{k});
+    fprintf('SVM Cross Validation for %s kernel function\n', SVM_KERNELS{k});
+    [svmTrainAccuracy(k), svmValidationAccuracy(k)] = svmCV(SVM_KERNELS{k});
 end
 
+save('results.mat', 'knnTrainAccuracy', 'knnValidationAccuracy', ...
+                    'nnTrainAccuracy', 'nnValidationAccuracy', ...
+                    'svmTrainAccuracy', 'svmValidationAccuracy');
 % Prepare data for plotting
 for k = 1:numel(SVM_KERNELS)
 
@@ -33,16 +39,16 @@ for k = 1:numel(SVM_KERNELS)
     svmBar(k, 2) = svmValidationAccuracy(k);
 end
 
-for n = 1:numel(KNN_NEIGHBOR_VALUES)
+for n = KNN_NEIGHBOR_VALUES
 
-    knnBar(n, 1) = knnTrainAccuracy(n);
-    knnBar(n, 2) = knnValidationAccuracy(n);
+    knnBar((n + 1) / 2, 1) = knnTrainAccuracy(n);
+    knnBar((n + 1) / 2, 2) = knnValidationAccuracy(n);
 end
 
-for h = 1:numel(NN_HIDDEN_LAYER_SIZE_VALUES)
+for h = NN_HIDDEN_LAYER_SIZE_VALUES
 
-    nnBar(h, 1) = nnTrainAccuracy(h);
-    nnBar(h, 2) = nnValidationAccuracy(h);
+    nnBar((h - 10) / 5, 1) = nnTrainAccuracy(h);
+    nnBar((h - 10) / 5, 2) = nnValidationAccuracy(h);
 end
 
 % PLOT SVM
@@ -55,7 +61,8 @@ l{2} = 'CV';
 legend(h, l);
 title('SVM - Gaussian Kernel');
 % xlabel('Kernel Functions');
-set(gca, 'xticklabel', SVM_KERNELS)
+set(gca, 'xticklabel', {'LINEAR'; 'RBF'; 'POLYNOMIAL (3rd Order)'});
+set(gca, 'ytick', 0:2:100);
 ylabel('Accuracy');
 
 % PLOT KNN
@@ -67,6 +74,7 @@ l{1} = 'Training';
 l{2} = 'CV';
 legend(h, l);
 title('KNN');
+set(gca, 'ytick', 0:2:100);
 xlabel('Number of Neighbors');
 ylabel('Accuracy');
 
@@ -78,6 +86,7 @@ l = cell(1, 2);
 l{1} = 'Training';
 l{2} = 'CV';
 legend(h, l);
-title('2-Layer Neural Network');
-xlabel('Number of Neighbors');
+title('2-Layer Perceptron');
+set(gca, 'ytick', 0:2:100);
+xlabel('Number of Neurons Inside Hidden Layer');
 ylabel('Accuracy');
