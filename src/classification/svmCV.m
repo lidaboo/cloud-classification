@@ -1,7 +1,7 @@
 function [avgAccuracyTrain, avgAccuracyCV] = svmCV(kernelFunction)
     
     NUMBER_OF_FOLDS = 10;
-    DATA_FILE_NAME_SUBSTRING = '../DWT/CV/EqualClasses/imdb.fold.';
+    DATA_FILE_NAME_SUBSTRING = '../../data/DWT/CV/EqualClasses/imdb.fold.';
 
     trainingAccuracy = zeros(NUMBER_OF_FOLDS, 1);
     validationAccuracy = zeros(NUMBER_OF_FOLDS, 1);

@@ -1,6 +1,6 @@
 KNN_NEIGHBOR_VALUES = 1:2:15;
 NN_HIDDEN_LAYER_SIZE_VALUES = 15:5:50;
-SVM_KERNELS = {'linear'; 'gaussian'; 'polynomial'};
+SVM_KERNELS = {'linear'; 'rbf'; 'polynomial'};
 
 knnTrainAccuracy = zeros(numel(KNN_NEIGHBOR_VALUES), 1);
 knnValidationAccuracy = zeros(numel(KNN_NEIGHBOR_VALUES), 1);
@@ -59,7 +59,7 @@ l = cell(1, 2);
 l{1} = 'Training';
 l{2} = 'CV';
 legend(h, l);
-title('SVM - Gaussian Kernel');
+title('SVM');
 % xlabel('Kernel Functions');
 set(gca, 'xticklabel', {'LINEAR'; 'RBF'; 'POLYNOMIAL (3rd Order)'});
 set(gca, 'ytick', 0:2:100);
